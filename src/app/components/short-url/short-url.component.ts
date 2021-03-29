@@ -70,6 +70,7 @@ export class ShortUrlComponent implements OnInit {
     },error => {
       this.loading = false
       this.nombreUrl = ''
+      console.log(error)
       if(error.error.description == "The value provided is invalid."){
           this.error("La URL ingresada es invalida")
       }

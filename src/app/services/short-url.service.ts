@@ -1,6 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable,throwError } from 'rxjs';
+
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse
+} from '@angular/common/http';
+
+import {catchError} from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +28,19 @@ export class ShortUrlService {
 
   getUrlShort(nombreUrl: string): Observable<any>{
 
-  const tokenHeader = new HttpHeaders({Authorization: 'Bearer '+this.token});
+  //const tokenHeader = new HttpHeaders({Authorization: 'Bearer '+this.token});
 
     const body = {
 
       long_url: nombreUrl
     }
 
-    return this.http.post(this.URL,body,{headers: tokenHeader})
+    return this.http.post(this.URL,body).pipe(catchError((error: HttpErrorResponse) => {
+
+      console.log(error);
+
+      return throwError(error)
+    }));
 
   }
 }
