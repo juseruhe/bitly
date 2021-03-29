@@ -39,14 +39,9 @@ export class ShortUrlComponent implements OnInit {
 
   if(this.nombreUrl == ""){
 
-    this.mostrarError = true;
 
-    this.textError = "Por favor Ingrese una URL"
-
-    setTimeout(()=>{
-
-     this.mostrarError = false;
-    },4000)
+    this.error("Por Favor Ingrese URL")
+    
 
     return
   }
@@ -72,7 +67,28 @@ export class ShortUrlComponent implements OnInit {
       this.loading= false;
       this.urlProcesada = true;
       this.urlShort = data.link
+    },error => {
+      this.loading = false
+      this.nombreUrl = ''
+      if(error.error.description == "The value provided is invalid."){
+          this.error("La URL ingresada es invalida")
+      }
+      
     });
+
+  }
+
+  error(valor: string){
+
+    this.mostrarError = true;
+
+    this.textError = valor
+
+    setTimeout(()=>{
+
+     this.mostrarError = false;
+    },4000)
+
 
   }
 
